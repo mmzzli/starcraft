@@ -19,6 +19,7 @@
     "nft.storage": "^7.1.0",
     "react": "^18.2.0",
     "starcraft-sdk": "^1.0.37",
+    "terser": "^5.31.6",
     "vant": "^4.5.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2",
