@@ -97,6 +97,6 @@ async function uploadIpfsVersion(cid) {
   }
 }
 
-uploadDirectory();
+// uploadDirectory();
 // node storeDirectory.mjs test
 // npm run build:dev
