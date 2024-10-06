@@ -2,8 +2,12 @@
   <van-config-provider>
     <header>
       <img class="logo" :src="logo" alt="" @click="closePage" />
-      <img class="menu_btn" :src="img40" alt="" v-if="walletAccount" @click="openSide" />
-      <button class="connect" v-else @click="walletConnect">Connect Wallet</button>
+      <div style="display: flex;">
+        <button style="margin: 0 8px;" @click="handleSwitchToTon">Switch To Ton</button>
+        <img class="menu_btn" :src="img40" alt="" v-if="walletAccount" @click="openSide" />
+        <button v-else class="connect" @click="walletConnect">Connect Wallet</button>
+      </div>
+
     </header>
     <main :class="{ miningbg: route.path == '/Mining' }">
       <router-view></router-view>
@@ -176,6 +180,10 @@ const getIpfsVersion = async () => {
     proxy.$showFailToast('Error');
   }
 };
+
+const handleSwitchToTon = () => {
+  location.href = "https://www.starcraft-ton.xyz/#/"
+}
 </script>
 
 <style lang="scss">
@@ -195,10 +203,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .logo {
     width: auto;
     height: 100%;
   }
+
   .connect {
     width: 160px;
     height: 60px;
@@ -210,12 +220,14 @@ header {
     font-weight: 500;
     color: #fff;
   }
+
   .menu_btn {
     width: 34px;
     height: 34px;
     margin-right: 16px;
   }
 }
+
 main {
   width: 100%;
   min-height: 100vh;
@@ -223,6 +235,7 @@ main {
   background-size: 100%;
   padding: 60px 0 30px;
 }
+
 .miningbg {
   background: url('./assets/images/img17.png');
   background-size: 100%;
@@ -235,14 +248,17 @@ main {
   display: flex;
   flex-wrap: wrap;
   align-content: space-between;
+
   .account {
     width: 100%;
     height: calc(100% - 85px);
     overflow-y: auto;
     padding: 0 30px;
-    > div {
+
+    >div {
       margin-bottom: 10px;
     }
+
     h3 {
       font-size: 18px;
       font-family: Aemstel-Regular, Aemstel;
@@ -250,11 +266,13 @@ main {
       color: #384c66;
       margin-bottom: 10px;
     }
+
     .address {
-      > div {
+      >div {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         button {
           width: 80%;
           height: 45px;
@@ -265,12 +283,14 @@ main {
           background: rgba(46, 46, 46, 0.1);
           border-radius: 8px;
         }
+
         img {
           width: 24px;
           height: 24px;
         }
       }
     }
+
     .balance {
       p {
         height: 20px;
@@ -281,6 +301,7 @@ main {
         margin-bottom: 10px;
         display: flex;
         align-items: center;
+
         img {
           width: 20px;
           height: 20px;
@@ -288,6 +309,7 @@ main {
         }
       }
     }
+
     .btn {
       width: 100%;
       height: 45px;
@@ -298,6 +320,7 @@ main {
       font-weight: 400;
       color: #fff;
     }
+
     .ipfslist {
       font-size: 16px;
       font-family: Aemstel-Regular, Aemstel;
@@ -313,11 +336,14 @@ main {
       }
     }
   }
+
   ul {
     width: 100%;
     padding: 0 30px;
+
     li {
       margin-top: 10px;
+
       img {
         width: 32px;
         margin-right: 5px;
@@ -325,6 +351,7 @@ main {
     }
   }
 }
+
 a {
   font-size: 16px;
   font-family: Aemstel-Regular, Aemstel;
@@ -333,6 +360,7 @@ a {
   display: flex;
   align-items: center;
 }
+
 .van-popup__close-icon {
   font-size: 30px !important;
   color: #384c66 !important;
