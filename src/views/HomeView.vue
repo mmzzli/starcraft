@@ -43,11 +43,17 @@
         <img :src="img49" alt="" />
         <p>Purchase Node</p>
       </li>
+      <li @click="toPage('/Bind')">
+        <img :src="img6" alt="" />
+        <p>Bind</p>
+      </li>
+      <li @click="toPage('/Bridge')">
+        <img :src="img3" alt="" />
+        <p>Bridge</p>
+      </li>
     </ul>
     <img class="bag_img" :src="img27" alt="" @click="router.push('/Bags')" />
-    <van-popup
-      v-model:show="show"
-      :style="{ width: '100%',background: 'transparent' }">
+    <van-popup v-model:show="show" :style="{ width: '100%', background: 'transparent' }">
       <div class="popupbox1 rich_plan_popup">
         <img class="closebtn" :src="img32" alt="" @click="closeItem" />
         <img class="banner" :src="img26" alt="" />
@@ -63,6 +69,7 @@
 <script lang="ts" setup>
 import img32 from '@/assets/images/img32.svg';
 import img26 from '@/assets/images/img26.png';
+import img3 from '@/assets/images/img3.png';
 import img4 from '@/assets/images/img4.png';
 import img5 from '@/assets/images/img5.png';
 import img6 from '@/assets/images/img6.png';
@@ -151,13 +158,16 @@ const toPage = (path: string) => {
   position: relative;
   padding: 0 15px;
 }
+
 .box {
   .title {
     font-size: 20px;
     text-shadow: 0 0 4px rgba(0, 46, 255, 0.6);
   }
+
   .btns {
     display: flex;
+
     button {
       width: 50%;
       height: 94px;
@@ -168,23 +178,38 @@ const toPage = (path: string) => {
     }
   }
 }
+
 .list {
   padding: 60px 0 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+
   li {
     width: 33.33%;
     height: auto;
     position: relative;
     margin-bottom: 30px;
-    &:nth-of-type(3n-1), &.li_top {
+
+    &:nth-of-type(3n-1),
+    &.li_top {
       transform: translateY(-50px);
     }
+
+    &:nth-of-type(7) {
+      transform: translate(0px, -50px);
+    }
+
+    &:nth-of-type(8) {
+      transform: translate(25px, -50px);
+    }
+
+
     img {
       width: 100%;
       height: auto;
     }
+
     p {
       width: 90%;
       text-align: center;
@@ -198,6 +223,7 @@ const toPage = (path: string) => {
     }
   }
 }
+
 .bag_img {
   width: 64px;
   height: auto;
@@ -205,11 +231,13 @@ const toPage = (path: string) => {
   bottom: 20px;
   right: 20px;
 }
+
 .banner {
   width: 100%;
   height: auto;
   margin-bottom: 10px;
 }
+
 .main_title {
   color: #FFF;
   font-size: 1.5rem;
@@ -217,6 +245,7 @@ const toPage = (path: string) => {
   font-weight: 700;
   line-height: normal;
 }
+
 .main_desc {
   color: #FFF;
   font-size: 0.8rem;
@@ -237,6 +266,7 @@ const toPage = (path: string) => {
   font-size: 14px;
   text-shadow: 0 0 4px rgba(0, 46, 255, 0.6);
 }
+
 .tips_content {
   width: 100%;
   height: 4.3rem;
@@ -249,9 +279,11 @@ const toPage = (path: string) => {
   margin-bottom: 1.8rem;
   margin-top: 1.8rem;
 }
+
 .rich_plan_popup {
   width: 100%;
   padding: 5rem 1rem;
+
   .closebtn {
     width: 2rem;
     height: 2rem;
@@ -260,6 +292,4 @@ const toPage = (path: string) => {
     top: 2.5rem;
   }
 }
-
-
 </style>

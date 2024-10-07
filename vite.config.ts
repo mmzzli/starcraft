@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { VantResolver } from 'unplugin-vue-components/resolvers';
+import nodePolyfills from 'vite-plugin-node-stdlib-browser'
 
 // https://vitejs.dev/config/
 
@@ -30,7 +31,8 @@ export default ({ mode }) => {
       Components({
         resolvers: [VantResolver()]
       }),
-      vue()
+      vue(),
+      nodePolyfills(),
     ],
     build: {
       minify: 'terser',

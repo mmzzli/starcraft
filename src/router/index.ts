@@ -59,7 +59,15 @@ const router = createRouter({
     {
       path: '/RichPlanInvite',
       component: () => import('@/views/RichPlanInvite.vue')
-    }
+    },
+    {
+      path: '/Bind',
+      component: () => import('@/views/Bind.vue')
+    },
+    {
+      path: '/Bridge',
+      component: () => import('@/views/Bridge.vue')
+    },
   ]
 });
 router.beforeEach((to, from, next) => {
