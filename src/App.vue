@@ -171,6 +171,7 @@ const openSide = () => {
 };
 
 const getIpfsVersion = async () => {
+  return
   currentVersion.value = process.env.npm_package_version || '';
   try {
     const res = await proxy.$api.getIpfsVersion();
