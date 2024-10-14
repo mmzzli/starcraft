@@ -34,7 +34,10 @@ import { Address } from '@ton/ton'
 const store = useStore();
 const route = useRoute();
 const tokenAddressList = ref([
-  ["SCT", '0x39159907efBF908D1B14CFB537D5db9aA6AAb3d7'],
+  ["SCT", '0x7A27F0419289d703896877594B93a023828585e4'],
+  ["FILWT", '0x8fF463fA01f3Ba0C3E1c50f249f57EbfB421e7De'],
+  ["FUEL", '0x3DD0623c9e2DC16fA9d4280006C0462e646a034a'],
+  ["AD FUEL", '0xC6962A56A58D3FC2c8c0Fbe38100B27699A6df4F'],
 ])
 const tokenAddress = ref(tokenAddressList.value[0][1])
 const tokenAmount = ref('')
@@ -43,6 +46,10 @@ const toAddress = ref('')
 onMounted(() => {
   if (route.query.Bridge) store.commit('Bridge', route.query.Bridge);
 });
+
+const approve = (token) => {
+  const contract = new ethers.Contract(token, ["function approve(address,uint256)"], getSigner())
+}
 
 const transfer = () => {
   const addressTon = Address.parse(toAddress.value);
