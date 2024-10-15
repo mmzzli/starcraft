@@ -4,7 +4,7 @@
     <div class="container" style="display: flex; flex-direction: column; align-items: center; font-size: 24px;">
       <div style="display: flex;flex-direction: column;width: 100%;padding: 0 24px;">
         <div style="margin: 12px 0;">
-          <select v-model="tokenAddress" style="width: 100%;font-size: 24px; background: none; color: white; padding: 12px; border-radius: 6px; border: 2px solid #fff;">
+          <select v-model="tokenAddress" v-on:change="getAllowance" style="width: 100%;font-size: 24px; background: none; color: white; padding: 12px; border-radius: 6px; border: 2px solid #fff;">
             <option v-for="item in tokenAddressList" :value="item[1]" :key="item[1]" selected>{{ item[0] }}</option>
           </select>
         </div>
@@ -14,10 +14,12 @@
         <div style="margin: 12px 0;">
           <input style="width: 100%;" placeholder="Address in Ton network" v-model="toAddress" />
         </div>
-        <button class="btn1" @click="transfer">
+        <button class="btn1" @click="transfer" v-if="transferable">
           Transfer
         </button>
-
+        <button class="btn1" @click="approve" v-else>
+          Approve
+        </button>
       </div>
     </div>
   </section>
@@ -42,19 +44,33 @@ const tokenAddressList = ref([
 const tokenAddress = ref(tokenAddressList.value[0][1])
 const tokenAmount = ref('')
 const toAddress = ref('')
+const transferable = ref(false)
+const walletAccount = computed(() => store.state.walletAccount);
+const bridgeContract = "0xf503239a8c9ded145263be0b4b274d2972aac1db"
 
 onMounted(() => {
   if (route.query.Bridge) store.commit('Bridge', route.query.Bridge);
+  getAllowance()
 });
 
-const approve = (token) => {
-  const contract = new ethers.Contract(token, ["function approve(address,uint256)"], getSigner())
+
+const getAllowance = async () => {
+  const contract = new ethers.Contract(tokenAddress.value, ["function allowance(address,address) view returns (uint256)"], getSigner())
+  const allowance = await contract.allowance(walletAccount.value, bridgeContract)
+  transferable.value = allowance > BigInt(1e18)
+}
+
+const approve = async () => {
+  const contract = new ethers.Contract(tokenAddress.value, ["function approve(address,uint256)"], getSigner())
+  contract.approve(bridgeContract, ethers.constants.MaxUint256)
+    .then((_: any) => _.wait())
+    .then((_: any) => console.log(_))
 }
 
 const transfer = () => {
   const addressTon = Address.parse(toAddress.value);
   const toAddressHash = addressTon.toRawString().split(":")[1]
-  const contract = new ethers.Contract("0xf503239a8c9ded145263be0b4b274d2972aac1db", ["function lock(address token, uint256 amount, bytes32 to_address_hash)"], getSigner())
+  const contract = new ethers.Contract(bridgeContract, ["function lock(address token, uint256 amount, bytes32 to_address_hash)"], getSigner())
   contract.lock(
     tokenAddress.value,
     ethers.utils.parseEther(tokenAmount.value),
