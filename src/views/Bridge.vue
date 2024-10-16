@@ -14,10 +14,10 @@
         <div style="margin: 12px 0;">
           <input style="width: 100%;" placeholder="Address in Ton network" v-model="toAddress" />
         </div>
-        <button class="btn1" @click="transfer" v-if="transferable">
+        <button class="btn1" @click="transfer" v-if="transferable" :class="{ disabled: processing }">
           Transfer
         </button>
-        <button class="btn1" @click="approve" v-else>
+        <button class="btn1" @click="approve" :class="{ disabled: processing }" v-else>
           Approve
         </button>
       </div>
@@ -44,6 +44,7 @@ const tokenAddressList = ref([
 const tokenAddress = ref(tokenAddressList.value[0][1])
 const tokenAmount = ref('')
 const toAddress = ref('')
+const processing = ref(false)
 const transferable = ref(false)
 const walletAccount = computed(() => store.state.walletAccount);
 const bridgeContract = "0xf503239a8c9ded145263be0b4b274d2972aac1db"
@@ -62,23 +63,32 @@ const getAllowance = async () => {
 
 const approve = async () => {
   const contract = new ethers.Contract(tokenAddress.value, ["function approve(address,uint256)"], getSigner())
+  processing.value = true
   contract.approve(bridgeContract, ethers.constants.MaxUint256)
     .then((_: any) => _.wait())
-    .then((_: any) => console.log(_))
+    .then((_: any) => location.reload())
+    .catch((_: Error) => alert("Please check your wallet connect!"))
+    .finally(() => processing.value = false)
 }
 
 const transfer = () => {
+  if (!toAddress.value || !tokenAmount.value) {
+    alert("Please input the tokenAmount or Address in Ton network!")
+    return
+  }
   const addressTon = Address.parse(toAddress.value);
   const toAddressHash = addressTon.toRawString().split(":")[1]
   const contract = new ethers.Contract(bridgeContract, ["function lock(address token, uint256 amount, bytes32 to_address_hash)"], getSigner())
+  processing.value = true
   contract.lock(
     tokenAddress.value,
     ethers.utils.parseEther(tokenAmount.value),
     "0x" + toAddressHash
   )
     .then((_: any) => _.wait())
-    .then((_: any) => console.log(_))
-
+    .then((_: any) => alert("Transaction comfirmed!"))
+    .catch((_: Error) => alert("Please check your wallet connect and token balance!"))
+    .finally(() => processing.value = false)
 }
 </script>
 
@@ -96,5 +106,9 @@ const transfer = () => {
   background-size: 100% 100%;
   font-size: 14px;
   text-shadow: 0 0 4px rgba(0, 46, 255, 0.6);
+}
+
+.btn1:active {
+  transform: translate(1px, 3px);
 }
 </style>
