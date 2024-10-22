@@ -83,12 +83,7 @@
             <div class="profit">
               <img :src="SCT" alt="" />
               <span>
-                <CountTo
-                  class="total"
-                  :startVal="tokenRewards_"
-                  :endVal="tokenRewards"
-                  :duration="1000"
-                  :decimals="4" />
+                <CountTo class="total" :startVal="tokenRewards_" :endVal="tokenRewards" :duration="1000" :decimals="4" />
               </span>
             </div>
             <img :src="img33" alt="" />
@@ -210,11 +205,7 @@
         <div class="title">Select Facility</div>
         <div class="popup_SelectFacility">
           <ul>
-            <li
-              v-for="(item, index) in scfList.list"
-              :key="index"
-              @click="selectSCF(item)"
-              :class="{ disabled: item.checked }">
+            <li v-for="(item, index) in scfList.list" :key="index" @click="selectSCF(item)" :class="{ disabled: item.checked }">
               <img :src="item.image" alt="" />
               <p>Energy:{{ item.attributes.Energy }}</p>
             </li>
@@ -375,6 +366,9 @@ const getNFTList = async () => {
     const jsonData = JSON.parse(decodedData);
     nftName.value = jsonData.name.split('#')[0];
     nftImage.value = jsonData.image;
+
+    console.log(stopAni.value, nftName.value, nftImage.value)
+
     nftAttributes = jsonData.attributes.reduce((acc, attribute) => {
       acc[attribute.trait_type] = attribute.value;
       return acc;
@@ -628,7 +622,7 @@ const getTokenRewards = async () => {
     // const res2 = await planetPool().getTokenRewards(walletAccount.value, 1);
     tokenRewards.value =
       proxy.$utils.utilFormat(util.formatEther(res));
-      //  + proxy.$utils.utilFormat(util.formatEther(res2))
+    //  + proxy.$utils.utilFormat(util.formatEther(res2))
   } catch (err) {
     console.error(err);
     // proxy.$showFailToast('Error');
@@ -888,9 +882,11 @@ const onInput = () => {
 .container {
   position: relative;
 }
+
 .container2 {
   width: 100%;
 }
+
 .exp {
   position: absolute;
   left: 15px;
@@ -900,6 +896,7 @@ const onInput = () => {
   justify-content: space-between;
   align-items: center;
   z-index: 9;
+
   .box {
     display: flex;
     flex-direction: column;
@@ -908,12 +905,14 @@ const onInput = () => {
     position: relative;
     overflow-x: hidden;
     padding-bottom: 8px;
+
     img {
       width: 150px;
       height: 18px;
       position: relative;
       z-index: 1;
     }
+
     i {
       display: block;
       position: absolute;
@@ -922,6 +921,7 @@ const onInput = () => {
       left: 0;
       background: #4d78ff;
     }
+
     p {
       font-size: 10px;
       position: absolute;
@@ -930,6 +930,7 @@ const onInput = () => {
       z-index: 2;
     }
   }
+
   .upgrade {
     width: 30px;
     height: 30px;
@@ -940,23 +941,28 @@ const onInput = () => {
     top: -5px;
   }
 }
+
 .infobox {
   position: absolute;
   right: 15px;
   top: 15px;
+
   .info {
     background: linear-gradient(270deg, rgba(77, 137, 235, 0.3), rgba(42, 48, 66, 0.1) 50%, rgba(77, 137, 235, 0.3));
     border-radius: 8px;
     padding: 8px;
     margin-bottom: 10px;
+
     li {
       display: flex;
       align-items: center;
+
       img {
         width: 16px;
         height: 16px;
         margin-right: 5px;
       }
+
       .title {
         width: 100%;
         display: flex;
@@ -965,17 +971,20 @@ const onInput = () => {
         font-size: 12px;
         color: #90ad73;
       }
+
       .progress {
         width: 110px;
         height: 8px;
         margin-top: 2px;
         background: rgba(144, 173, 115, 0.2);
+
         i {
           height: 100%;
           display: block;
           background: #90ad73;
         }
       }
+
       .progress2 {
         width: 110px;
         height: 8px;
@@ -983,59 +992,71 @@ const onInput = () => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         i {
           width: 5%;
           height: 100%;
           background: #d39f53;
           opacity: 0.1;
+
           &.active {
             opacity: 1;
           }
         }
       }
     }
+
     .li2 {
       margin-top: 5px;
+
       .title {
         color: #d39f53;
       }
     }
   }
+
   .energy {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
     img {
       width: 24px;
       height: 24px;
     }
+
     p {
       font-size: 12px;
       margin-left: 6px;
     }
   }
 }
+
 .time {
   width: fit-content;
   display: flex;
   position: relative;
   top: 0;
   left: 50%;
+
   img {
     width: 20px;
     height: auto;
   }
+
   p {
     font-size: 12px;
     margin-left: 4px;
   }
 }
+
 .timed {
   width: 80%;
   background: rgba(189, 223, 255, 0.2);
   border-radius: 8px;
   margin: 30px auto;
   padding: 10px;
+
   p {
     display: flex;
     align-items: center;
@@ -1044,6 +1065,7 @@ const onInput = () => {
     color: hsla(0, 0%, 100%, 0.6);
     line-height: 20px;
   }
+
   .btn {
     padding: 0 5px;
     height: 20px;
@@ -1054,22 +1076,27 @@ const onInput = () => {
     font-size: 12px;
   }
 }
+
 .Navigation {
   width: 100%;
   margin: 30px auto;
   display: flex;
   justify-content: space-around;
   text-align: center;
-  > div {
+
+  >div {
     position: relative;
-    > img {
+
+    >img {
       width: 64px;
       height: 64px;
     }
-    > p {
+
+    >p {
       font-size: 10px;
       color: #a9cbf0;
     }
+
     .profit {
       width: fit-content;
       display: flex;
@@ -1080,6 +1107,7 @@ const onInput = () => {
       left: 0;
       right: 0;
       margin: auto;
+
       img {
         width: 16px;
         height: 16px;
@@ -1087,17 +1115,20 @@ const onInput = () => {
     }
   }
 }
+
 .popup_AddFuel {
   p {
     font-size: 14px;
     text-align: center;
   }
+
   .img1 {
     display: block;
     width: 80px;
     height: 80px;
     margin: 20px auto;
   }
+
   input {
     width: 250px;
     height: 44px;
@@ -1111,6 +1142,7 @@ const onInput = () => {
     margin: 20px 0;
     text-align: center;
   }
+
   button {
     width: 250px;
     height: 44px;
@@ -1123,14 +1155,17 @@ const onInput = () => {
     margin: 20px 0;
   }
 }
+
 .popup_Facility {
   width: 275px;
   margin: 0 auto;
+
   li {
     width: 100%;
     height: 54px;
     margin-top: 20px;
     position: relative;
+
     .item {
       width: 100%;
       height: 100%;
@@ -1140,12 +1175,14 @@ const onInput = () => {
       display: flex;
       align-items: center;
       padding: 0 12px;
-      > img {
+
+      >img {
         width: 40px;
         height: 40px;
         border-radius: 50%;
         background: #fff;
       }
+
       .index {
         width: 40px;
         text-align: center;
@@ -1153,9 +1190,11 @@ const onInput = () => {
         line-height: 54px;
         text-shadow: 0 0 4px rgba(0, 46, 255, 0.6);
       }
+
       .text {
         p {
           font-size: 12px;
+
           &:nth-child(2) {
             color: #f3c040;
           }
@@ -1164,36 +1203,44 @@ const onInput = () => {
     }
   }
 }
+
 .popup_StartMining {
   .list2 {
     border-top: none !important;
+
     .itembox {
       margin: 0 auto;
     }
   }
+
   .list {
     height: 300px;
     overflow-y: auto;
     padding: 15px;
     border-top: 2px solid #fff;
+
     li {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
-      > img {
+
+      >img {
         width: auto;
         height: 54px;
       }
     }
+
     .itembox {
       width: 275px;
       height: 54px;
       position: relative;
-      > img {
+
+      >img {
         width: 100%;
         height: 100%;
       }
+
       .item {
         width: 100%;
         height: 100%;
@@ -1202,10 +1249,12 @@ const onInput = () => {
         left: 0;
         display: flex;
         align-items: center;
+
         .img {
           width: 40px;
           height: 40px;
           margin: 0 13px;
+
           img {
             width: 100%;
             height: 100%;
@@ -1213,15 +1262,19 @@ const onInput = () => {
             border-radius: 50%;
           }
         }
+
         .index {
           width: 20px;
           font-size: 20px;
         }
+
         .text {
           font-size: 12px;
+
           .text2 {
             color: #f3c040;
           }
+
           .text3 {
             color: hsla(0, 0%, 100%, 0.5);
           }
@@ -1235,6 +1288,7 @@ const onInput = () => {
     background: hsla(0, 0%, 100%, 0);
     box-shadow: inset 0 0 100px 0 rgba(77, 120, 255, 0.5);
     border-top: 2px solid #fff;
+
     input {
       width: 100%;
       height: 44px;
@@ -1246,6 +1300,7 @@ const onInput = () => {
       line-height: 44px;
       padding: 0 12px;
     }
+
     p {
       display: flex;
       align-items: center;
@@ -1253,6 +1308,7 @@ const onInput = () => {
       font-size: 14px;
       margin: 10px auto 20px;
     }
+
     button {
       width: 100%;
       height: 44px;
@@ -1266,13 +1322,16 @@ const onInput = () => {
     }
   }
 }
+
 .popup_SelectFacility {
   width: 100%;
   height: 335px;
+
   ul {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+
     li {
       width: fit-content;
       height: fit-content;
@@ -1283,10 +1342,12 @@ const onInput = () => {
       margin: 4px;
       position: relative;
       float: left;
+
       img {
         width: 74px;
         height: 82px;
       }
+
       p {
         width: 100%;
         line-height: 30px;
