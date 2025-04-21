@@ -8,13 +8,14 @@
           store.state.teamDao.teamId != '0'
       "
     >
-      所属团队ID:{{ parentTeamLeader.teamId || store.state.teamDao.teamId }}
+      所属团队ID:{{ store.state.teamDao.teamId || parentTeamLeader.teamId }}
     </div>
 
     <div class="container2">
       <img class="banner" :src="img26" alt="" />
 
       <!--      挖矿中  且有 父级 users 合约 且没激活过-->
+
       <button
         class="btn1"
         @click="handlerActiveInvite"
@@ -71,7 +72,8 @@
       </div>
     </div>
   </section>
-
+  <!--  show  @todo 要处理的逻辑包含 -->
+  <!-- 有上级之后不能接受邀请    是团队长也不能接受邀请    自己不能邀请自己-->
   <van-popup
     v-model:show="show"
     :style="{ width: '100%', background: 'transparent' }"

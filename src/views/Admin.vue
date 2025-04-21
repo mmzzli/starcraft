@@ -275,14 +275,14 @@
     <h4>提取余额</h4>
     <div class="inputbox">
       token地址：<input
-        type="number"
+        type="text"
         v-model="inputclaimTokenAddress"
         placeholder="请输入token地址"
       />
     </div>
     <div class="inputbox">
       提取地址：<input
-        type="number"
+        type="text"
         v-model="inputclaimEOAAddress"
         placeholder="请输入提取地址"
       />

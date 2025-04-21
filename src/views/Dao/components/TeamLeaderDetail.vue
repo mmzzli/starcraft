@@ -137,7 +137,10 @@ const copyInvite = () => {
 const handlerLeaveTeam = async () => {
   try {
     const res = await teamDaoFactory.unStake();
+    await res.wait();
+    await store.dispatch("getTeamDao");
     proxy.$showToast("退出成功");
+    //   @todo 自动返回上一层
   } catch (e) {
     console.log(e);
     proxy.$showToast("退出失败");
@@ -147,6 +150,8 @@ const handlerLeaveTeam = async () => {
 const handlerReward = async () => {
   try {
     const res = await teamDaoFactory.withDrawReward();
+    await res.wait();
+    await store.dispatch("getTeamDao");
     proxy.$showToast("领取成功");
   } catch (e) {
     console.log(e);
