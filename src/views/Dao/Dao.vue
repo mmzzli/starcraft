@@ -4,7 +4,8 @@
     <!--    todo-->
     <div
       v-if="
-        parentTeamLeader.teamId !== '0' || store.state.teamDao.teamId !== '0'
+        (parentTeamLeader.teamId && parentTeamLeader.teamId != '0') ||
+          store.state.teamDao.teamId != '0'
       "
     >
       所属团队ID:{{ parentTeamLeader.teamId || store.state.teamDao.teamId }}
@@ -17,7 +18,7 @@
       <button
         class="btn1"
         @click="handlerActiveInvite"
-        v-if="isShowInviteButton"
+        v-if="isShowInviteButton && !isLeaderDetailShow"
       >
         邀请激活
       </button>
@@ -236,6 +237,7 @@ const getCurAddressTeamLeaderInfo = async () => {
 const isShowInviteButton = ref(false);
 
 const calcInviteButton = async () => {
+  // 如果它是团队长不显示了
   if (!(await canRegisterTeamLeader())) {
     isShowInviteButton.value = false;
     return;
