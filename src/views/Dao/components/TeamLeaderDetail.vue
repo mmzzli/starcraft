@@ -86,7 +86,7 @@
         我的团队人数：
       </div>
       <div class="right">
-        {{ teamInfo.count + 1 }}
+        {{ teamInfo.count }}
       </div>
     </div>
 
