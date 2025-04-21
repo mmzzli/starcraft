@@ -1,6 +1,6 @@
-import { wallet, network, util, erc20 } from '@/utils';
-import store from '@/stores';
-import utils from '@/globalUtil';
+import { wallet, network, util, erc20 } from "@/utils";
+import store from "@/stores";
+import utils from "@/globalUtil";
 export default {
   /**
    * 连接钱包
@@ -10,7 +10,7 @@ export default {
    * @  onAccountChanged  监听帐户变化1
    * @  onChainChanged  监听网络变化1
    */
-  async walletConnect(walletType: string = 'metamask') {
+  async walletConnect(walletType: string = "metamask") {
     try {
       const accounts = await wallet.getAccount(walletType);
       const chainId = await wallet.getChainId();
@@ -19,7 +19,7 @@ export default {
       wallet.onAccountChanged(this.handleAccountsChanged);
       wallet.onChainChanged(this.handleChainChanged);
     } catch (err) {
-      console.error('Wallet connection error:', err);
+      console.error("Wallet connection error:", err);
     }
   },
   /**
@@ -30,7 +30,7 @@ export default {
     const address = util.getAddress(accounts[0]);
     const currentAddress = store.state.walletAccount;
     if (address !== currentAddress) {
-      store.commit('setWalletAccount', address);
+      store.commit("setWalletAccount", address);
       location.reload();
     }
   },
@@ -56,7 +56,11 @@ export default {
   /**检查授权 */
   async checkApprove(token: string, contract: string, balance: any) {
     try {
-      const res = await erc20(token).allowance(store.state.walletAccount, contract);
+      const res = await erc20(token).allowance(
+        store.state.walletAccount,
+        contract
+      );
+      console.log(res, "===allowance==");
       const quota = utils.utilFormat(util.formatEther(res.toString()));
       const isApprove = quota >= balance;
       return isApprove;

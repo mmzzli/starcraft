@@ -68,6 +68,10 @@ const router = createRouter({
       path: '/Bridge',
       component: () => import('@/views/Bridge.vue')
     },
+    {
+      path: '/DAO',
+      component: () => import('@/views/Dao/Dao.vue')
+    },
   ]
 });
 router.beforeEach((to, from, next) => {

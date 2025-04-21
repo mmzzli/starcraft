@@ -6,51 +6,13 @@
         <!-- <button @click="toPage('/BuyRole/2')" v-if="isDrawed == 0">L3 Planet Lucky Box</button> -->
       </div>
     </div>
-    <ul class="list">
-      <li @click="toPage('/Mining')" v-if="isDrawed == 2">
-        <img :src="img15" alt="" />
-        <p>My Planet</p>
-      </li>
-      <li @click="toPage('/BuyRole/1')" v-if="isDrawed == 0">
-        <img :src="img7" alt="" />
-        <p>Planet Lucky Box</p>
-      </li>
-      <li @click="toPage('/TokenInfo')">
-        <img :src="img13" alt="" />
-        <p>SCT Token Info</p>
-      </li>
-      <li @click="toPage('/Facility')">
-        <img :src="img4" alt="" />
-        <p>Facility Lucky Box</p>
-      </li>
-      <li @click="toPage('/Fuel/1')">
-        <img :src="img5" alt="" />
-        <p>Get Fuel</p>
-      </li>
-      <li @click="toPage('/RichPlan')">
-        <img :src="img51" alt="" />
-        <p>Rich Plan</p>
-      </li>
-      <li @click="toPage('/Invite')">
-        <img :src="img6" alt="" />
-        <p>Invitation Relationship</p>
-      </li>
-      <li @click="toPage('/NodeReward')" v-if="isPurchased > 0">
-        <img :src="img49" alt="" />
-        <p>Node Reward</p>
-      </li>
-      <li @click="toPage('/BuyNode')" v-else>
-        <img :src="img49" alt="" />
-        <p>Purchase Node</p>
-      </li>
-
-      <li @click="toPage('/Bind')">
-        <img :src="img6" alt="" />
-        <p>Bind</p>
-      </li>
-      <li @click="toPage('/Bridge')">
-        <img :src="img3" alt="" />
-        <p>Bridge</p>
+    <ul class="list" :class="{'left-1':pageList.length%3 == 1,'left-2':pageList.length%3 == 2}">
+      <li v-for="(item, index) in pageList" 
+          :key="item.path"
+          @click="toPage(item.path)"
+          >
+        <img :src="item.img" alt="" />
+        <p>{{ item.title }}</p>
       </li>
     </ul>
     <img class="bag_img" :src="img27" alt="" @click="router.push('/Bags')" />
@@ -80,7 +42,8 @@ import img15 from '@/assets/images/img15.png';
 import img27 from '@/assets/images/img27.png';
 import img49 from '@/assets/images/img49.png';
 import img51 from '@/assets/images/img51.png';
-import { ref, onMounted, getCurrentInstance, computed, watch } from 'vue';
+import img12 from '@/assets/images/img12.png';
+import {ref, onMounted, getCurrentInstance, computed, watch, effect} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { scp, scpBox, planetPool, buyNode } from '@/utils';
@@ -93,6 +56,71 @@ const isDrawed = ref(0);
 const isPurchased = ref(0);
 const show = computed(() => store.state.isShowRichPlanDialog);
 const inviteLink = ref('');
+
+const pageList = computed(()=>{
+  const list =  [
+    {
+      path: '/TokenInfo',
+      img: img13,
+      title: 'SCT Token Info'
+    },
+    {
+      path: '/Facility',
+      img: img4,
+      title: 'Facility Lucky Box'
+    },
+    {
+      path: '/Fuel/1',
+      img: img5,
+      title: 'Get Fuel'
+    },
+    {
+      path: '/RichPlan',
+      img: img51,
+      title: 'Rich Plan'
+    },
+    {
+      path: '/Invite',
+      img: img6,
+      title: 'Invitation Relationship'
+    },
+    {
+      path: isPurchased.value > 0 ? '/NodeReward' : '/BuyNode',
+      img: img49,
+      title: isPurchased.value > 0 ? 'Node Reward' : 'Purchase Node'
+    },
+    {
+      path: '/Bind',
+      img: img6,
+      title: 'Bind'
+    },
+    {
+      path: '/Bridge',
+      img: img3,
+      title: 'Bridge'
+    },
+    {
+      path: '/DAO',
+      img: img12,
+      title: 'DAO'
+    }
+  ]
+  if(isDrawed.value == 0){
+    list.unshift({
+      path: '/BuyRole/1',
+      img: img7,
+      title: 'Planet Lucky Box'
+    })
+  }
+  if(isPurchased.value == 2){
+    list.unshift(    {
+      path: '/Mining',
+      img: img15,
+      title: 'My Planet'
+    })
+  }
+  return list;
+})
 
 onMounted(() => {
   if (walletAccount.value) {
@@ -185,6 +213,16 @@ const toPage = (path: string) => {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  &.left-1{
+    li{
+      &:last-child{
+        transform: translateY(-50px);
+      }
+    }
+  }
+  &.left-2{
+    justify-content: flex-start;
+  }
 
   li {
     width: 33.33%;
@@ -192,19 +230,9 @@ const toPage = (path: string) => {
     position: relative;
     margin-bottom: 30px;
 
-    &:nth-of-type(3n-1),
-    &.li_top {
+    &:nth-child(3n+2) {
       transform: translateY(-50px);
     }
-
-    &:nth-of-type(7) {
-      transform: translate(0px, -50px);
-    }
-
-    &:nth-of-type(8) {
-      transform: translate(25px, -50px);
-    }
-
 
     img {
       width: 100%;
