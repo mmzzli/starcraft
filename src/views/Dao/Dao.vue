@@ -132,7 +132,11 @@ const parentTeamLeader = reactive({
 
 const handlerActiveInvite = async () => {
   if ((await canRegisterTeamLeader()) && parentTeamLeader.teamId) {
-    //
+    const tx = await teamDaoFactory.activateInviter();
+    await tx.wait();
+    await canRegisterTeamLeader();
+    await store.dispatch("getTeamDao");
+    await calcInviteButton();
   } else {
     proxy.$showToast("请先购买星球/且挖矿");
   }
