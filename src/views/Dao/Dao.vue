@@ -241,13 +241,14 @@ const getCurAddressTeamLeaderInfo = async () => {
 const isShowInviteButton = ref(false);
 
 const calcInviteButton = async () => {
-  // 如果它是团队长不显示了
   if (!(await canRegisterTeamLeader())) {
     isShowInviteButton.value = false;
     return;
   }
+
   if (parentTeamLeader.teamId && parentTeamLeader.teamLeaderAddress) {
     const res = await teamDapApi.getInviteActived(store.state.walletAccount);
+    console.log(!res.data.user.hasActived, "===hasActived=====");
     isShowInviteButton.value = !res.data.user.hasActived;
     return;
   }
@@ -296,8 +297,8 @@ const init = async () => {
   }
 };
 onMounted(async () => {
-  await calcInviteButton();
   await init();
+  await calcInviteButton();
 });
 
 const handlerToHome = () => {
