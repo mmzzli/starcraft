@@ -15,7 +15,9 @@
         <div class="info">
           <div class="top">Community Affiliation</div>
           <div class="down">
-            Team ID:{{ parentTeamLeader.teamId || store.state.teamDao.teamId }}
+            Community ID:{{
+              parentTeamLeader.teamId || store.state.teamDao.teamId
+            }}
           </div>
         </div>
       </div>
