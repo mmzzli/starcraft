@@ -122,7 +122,7 @@ const pageList = computed(() => {
     {
       path: "/DAO",
       img: img12,
-      title: "DAO"
+      title: "Dao"
     }
   ];
   if (isDrawed.value == 0) {
