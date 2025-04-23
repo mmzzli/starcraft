@@ -8,7 +8,7 @@
           store.state.teamDao.teamId != '0'
       "
     >
-      所属团队ID:{{ store.state.teamDao.teamId || parentTeamLeader.teamId }}
+      所属团队ID:{{ parentTeamLeader.teamId || store.state.teamDao.teamId }}
     </div>
 
     <div class="container2">
