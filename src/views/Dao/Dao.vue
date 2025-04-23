@@ -34,7 +34,6 @@
 
       <!--      挖矿中  且有 父级 users 合约 且没激活过-->
 
-      <!--      没有资格 提示-->
       <div
         v-if="store.state.teamDao.isNewTeamLeader && !isLeaderDetailShow"
         class="team-progress"
@@ -86,20 +85,22 @@
   <!-- 有上级之后不能接受邀请    是团队长也不能接受邀请    自己不能邀请自己-->
   <van-popup
     v-model:show="show"
+    class="van-popup-dialog"
     :style="{ width: '100%', background: 'transparent' }"
   >
     <div class="popupbox1 rich_plan_popup">
       <img class="closebtn" :src="img32" alt="" @click="show = false" />
       <img class="banner" :src="img26" alt="" />
-      <div class="main_title">接受Dao运营邀请，成为Dao成员</div>
-      <div class="main_desc">是否接受 {{ inviteCode }} 的邀请：</div>
+      <div class="main_title">
+        Accept the DAO operation invitation and become a DAO member.
+      </div>
+      <div class="main_desc">Do you accept {{ inviteCode }}'s invitation?</div>
       <div class="btn-group">
-        <button class="btn1" @click="handlerGetInvited">确认接受</button>
+        <button class="btn1" @click="handlerGetInvited">Confirm</button>
       </div>
       <div class="tips_content">
-        接收邀请将花费
-        {{ inviteAmount }}
-        u购买一个星球，然后自行参与星球挖矿，后激活邀请后，邀请人可收到收益！
+        Accepting the invitation requires spending {{ inviteAmount }}u to buy a
+        planet and start mining. Once activated, the inviter will earn rewards!
       </div>
     </div>
   </van-popup>
@@ -253,17 +254,26 @@ const getCurAddressTeamLeaderInfo = async () => {
 const isShowInviteButton = ref(false);
 
 const calcInviteButton = async () => {
+  // 如果没有成为团队长权限为 false
   if (!(await canRegisterTeamLeader())) {
     isShowInviteButton.value = false;
     return;
   }
+  console.log(typeof store.state.teamDao.teamId, "store.state.teamDao.teamId");
 
+  // 父的 teamID 和 teamLeaderAddress 都不为空，则判断是否已经激活了邀请
   if (parentTeamLeader.teamId && parentTeamLeader.teamLeaderAddress) {
     const res = await teamDapApi.getInviteActived(store.state.walletAccount);
     console.log(!res.data.user.hasActived, "===hasActived=====");
     isShowInviteButton.value = !res.data.user.hasActived;
     return;
   }
+  // 当前是团队长隐藏掉
+  if (store.state.teamDao.teamId != "0") {
+    isShowInviteButton.value = false;
+    return;
+  }
+
   isShowInviteButton.value = true;
 };
 
@@ -280,7 +290,18 @@ const init = async () => {
     if (inviteCode) {
       const res = await teamDaoFactory.users(store.state.walletAccount);
       const data = parseInt(res, 16);
-      isApprovedInvited.value = !data;
+
+      const isInvalid =
+        !data ||
+        inviteCode === store.state.walletAccount ||
+        !new BigNumber(store.state.teamDao.teamId).isZero();
+
+      isApprovedInvited.value = !isInvalid;
+
+      if (isInvalid) {
+        proxy.$showToast("Invalid invitation");
+      }
+
       await getCurAddressTeamLeaderInfo();
     }
 
@@ -290,7 +311,6 @@ const init = async () => {
     if (store.state.teamDao.isNewTeamLeader) {
       // 2.查看资格
       eligibility.value = await canRegisterTeamLeader();
-      console.log(eligibility.value, "---eligibility--");
       if (eligibility.value) {
         active.value = 1;
         // 检查授权金额是否满足
@@ -316,6 +336,17 @@ const handlerToHome = () => {
 </script>
 
 <style lang="scss" scoped>
+.van-popup-dialog {
+  .main_title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .tips_content {
+    margin-bottom: 20px;
+    font-size: 12px;
+  }
+}
 .team-header {
   display: flex;
   height: 76px;
@@ -365,7 +396,7 @@ const handlerToHome = () => {
       height: 33px;
       font-size: 12px;
       cursor: pointer;
-      background: rgba(10, 133, 249, 0.58);
+      background: rgb(83 172 255);
       box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.15);
       border-radius: 6px;
     }
@@ -485,15 +516,6 @@ const handlerToHome = () => {
   width: 100%;
   height: auto;
   margin-bottom: 10px;
-}
-
-.main_title {
-  color: #fff;
-  text-align: center;
-  font-size: 1.5rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
 }
 
 .main_desc {
