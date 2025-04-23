@@ -1,14 +1,32 @@
 <template>
   <section class="container">
     <HeaderTitle headTitle="" />
-    <!--    todo-->
     <div
+      class="team-header"
       v-if="
         (parentTeamLeader.teamId && parentTeamLeader.teamId != '0') ||
           store.state.teamDao.teamId != '0'
       "
     >
-      所属团队ID:{{ parentTeamLeader.teamId || store.state.teamDao.teamId }}
+      <div class="left">
+        <div class="icon">
+          <i class="iconfont icon-team"></i>
+        </div>
+        <div class="info">
+          <div class="top">Team Affiliation</div>
+          <div class="down">
+            Team ID:{{ parentTeamLeader.teamId || store.state.teamDao.teamId }}
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <button
+          @click="handlerActiveInvite"
+          v-if="isShowInviteButton && !isLeaderDetailShow"
+        >
+          Invitation activation
+        </button>
+      </div>
     </div>
 
     <div class="container2">
@@ -16,39 +34,31 @@
 
       <!--      挖矿中  且有 父级 users 合约 且没激活过-->
 
-      <button
-        class="btn1"
-        @click="handlerActiveInvite"
-        v-if="isShowInviteButton && !isLeaderDetailShow"
-      >
-        邀请激活
-      </button>
-
       <!--      没有资格 提示-->
       <div
         v-if="store.state.teamDao.isNewTeamLeader && !isLeaderDetailShow"
-        style="margin-top: 20px"
+        class="team-progress"
       >
-        <p class="main_title">成为 Team Leader</p>
-        <van-steps
-          :active="active"
-          active-color="#7AB2FF"
-          inactive-color="#fff"
-        >
-          <van-step>校验权限</van-step>
-          <van-step>授权</van-step>
-          <van-step>质押</van-step>
-        </van-steps>
+        <p class="team-progress-title">Become a Team Leader</p>
+        <div class="team-progress-main">
+          <div
+            class="team-progress-main-line"
+            :style="`width:${((active * 1) / 3) * 100}%`"
+          ></div>
+        </div>
+        <div class="team-progress-text">
+          <div class="item">Verify permission</div>
+          <div class="item">Authorization</div>
+          <div class="item">Pledge</div>
+        </div>
       </div>
 
-      <!--      激活
-      1. 当前用户有上级，而且没有激活过,且具备成为 teamLeader 资格，且已经挖矿viewCanRegisterTeamLeader
-      2.
-      -->
-
-      <div v-if="active == 0">
-        当前权限不够，请求买星球，并质押后再来成为 Team Leader
-        <button class="btn1" @click="handlerToHome">购买星球</button>
+      <div class="permission-box" v-if="active == 0 && !isLeaderDetailShow">
+        <div class="info">
+          The current permissions are insufficient. Request to purchase a
+          planet, stake it, and then become a Team Leader again
+        </div>
+        <button class="btn1" @click="handlerToHome">BUY PLANET</button>
       </div>
 
       <div v-if="active == 1">
@@ -56,7 +66,7 @@
           class="btn1"
           @click="handlerApproveUsdt(store.state.teamDao.stakeAmount)"
         >
-          授权
+          Approve
         </button>
       </div>
 
@@ -64,8 +74,8 @@
 
       <TeamLeaderDetail v-if="isLeaderDetailShow" />
 
-      <div style="margin-top: 20px">
-        <p>邀请参与DAO治理，获取更多权益。</p>
+      <div class="invite-box">
+        <p>Invite to participate in DAO governance and gain more benefits.</p>
         <button class="btn1" @click="getInvitationLink">
           Copy your invitation link
         </button>
@@ -259,15 +269,11 @@ const calcInviteButton = async () => {
 
 const init = async () => {
   try {
-    console.log(3333, "------");
-
     const balance = await teamDaoFactory.getNeedTeamItemUsdtNum();
-    console.log(balance, "------");
     inviteAbsAmount.value = balance.toString();
     inviteAmount.value = new BigNumber(balance.toString())
       .dividedBy(new BigNumber(10).pow(18))
       .toString();
-    console.log(inviteAmount.value, "---------");
 
     await getCurAddressTeamLeaderInfo();
     // 获取它的父级信息
@@ -277,7 +283,6 @@ const init = async () => {
       isApprovedInvited.value = !data;
       await getCurAddressTeamLeaderInfo();
     }
-    console.log(4444);
 
     //  1. 获取 teamDao 信息
     await store.dispatch("getTeamDao");
@@ -285,7 +290,7 @@ const init = async () => {
     if (store.state.teamDao.isNewTeamLeader) {
       // 2.查看资格
       eligibility.value = await canRegisterTeamLeader();
-
+      console.log(eligibility.value, "---eligibility--");
       if (eligibility.value) {
         active.value = 1;
         // 检查授权金额是否满足
@@ -293,6 +298,8 @@ const init = async () => {
       } else {
         active.value = 0;
       }
+    } else {
+      // store.state.teamDao.
     }
   } catch (e) {
     console.log(e);
@@ -309,6 +316,146 @@ const handlerToHome = () => {
 </script>
 
 <style lang="scss" scoped>
+.team-header {
+  display: flex;
+  height: 76px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 0 24px;
+  box-sizing: border-box;
+  border: 2px solid #ffffff;
+  border-radius: 6px;
+
+  .left {
+    display: flex;
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 23px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+    .info {
+      margin-left: 14px;
+      display: flex;
+      flex-direction: column;
+      .top {
+        text-shadow: 0px 0px 8px #3971f3;
+        font-size: 14px;
+      }
+      .down {
+        font-size: 24px;
+        font-weight: bold;
+      }
+    }
+  }
+  .right {
+    display: flex;
+    padding: 6px;
+    justify-content: center;
+    align-items: center;
+    button {
+      padding: 0 6px;
+      width: 100%;
+      height: 33px;
+      font-size: 12px;
+      cursor: pointer;
+      background: rgba(10, 133, 249, 0.58);
+      box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+    }
+  }
+}
+.team-progress {
+  margin: 0 24px;
+  &-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 32px;
+    text-align: center;
+    letter-spacing: 0px;
+    color: #ffffff;
+    text-shadow: 0px 0px 8px #3971f3;
+    z-index: 0;
+    margin-bottom: 14px;
+  }
+  &-main {
+    height: 8px;
+    display: flex;
+    border-radius: 8px;
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.001),
+        rgba(0, 0, 0, 0.001)
+      ),
+      linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), #ffffff;
+
+    box-shadow: 0px 0px 8px 0px #3971f3;
+
+    &-line {
+      border-radius: 8px;
+      min-width: calc(1 / 3) * 100%;
+      background: linear-gradient(90deg, #73a2ff 0%, #0055ff 100%);
+      box-shadow: 0px 0px 10px 0px rgba(42, 75, 141, 0.5);
+      height: 100%;
+    }
+  }
+  &-text {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 20px;
+    font-size: 14px;
+    line-height: 20px;
+    .item {
+      width: calc(1 / 3) * 100%;
+      text-align: center;
+      &:last-of-type {
+        text-align: right;
+      }
+      &:first-of-type {
+        text-align: left;
+      }
+    }
+  }
+}
+.permission-box {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  .info {
+    margin: 0 24px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    box-sizing: border-box;
+    border: 1px solid #4a7ab9;
+    font-size: 12px;
+    text-align: center;
+    line-height: 22px;
+  }
+}
+.invite-box {
+  margin-top: 20px;
+  p {
+    margin: 0 35px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    text-align: center;
+  }
+}
 .popupbox1 {
   width: 100%;
 }
@@ -332,7 +479,6 @@ const handlerToHome = () => {
 }
 .container2 {
   width: 100%;
-  padding: 0 15px;
 }
 
 .banner {
@@ -368,7 +514,9 @@ const handlerToHome = () => {
   margin: 0 auto;
   background: url("../../assets/images/img25.png") no-repeat;
   background-size: 100% 100%;
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 32px;
   text-shadow: 0 0 4px rgba(0, 46, 255, 0.6);
 }
 
