@@ -6,7 +6,9 @@
       status is lost and login to DAO governance is no longer possible. Only
       after successfully staking can you log in.
     </p>
-    <button class="btn1" @click="toBeTeamLeader">Become a Team Leader</button>
+    <button class="btn1" @click="toBeTeamLeader">
+      Become a Community Leader
+    </button>
   </div>
 </template>
 

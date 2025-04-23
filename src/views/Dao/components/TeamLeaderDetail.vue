@@ -66,7 +66,7 @@
 
     <div class="item">
       <div class="left">
-        <i class="iconfont icon-team"></i>The number of people in my team
+        <i class="iconfont icon-team"></i>The number of people in my Community
       </div>
       <div class="right">
         {{ teamInfo.count }}
@@ -122,11 +122,11 @@ const handlerLeaveTeam = async () => {
     const res = await teamDaoFactory.unStake();
     await res.wait();
     await store.dispatch("getTeamDao");
-    proxy.$showToast("退出成功");
+    proxy.$showToast("Exit confirmed");
     //   @todo 自动返回上一层
   } catch (e) {
     console.log(e);
-    proxy.$showToast("退出失败");
+    proxy.$showToast("Failed to exit");
   }
 };
 
@@ -135,10 +135,10 @@ const handlerReward = async () => {
     const res = await teamDaoFactory.withDrawReward();
     await res.wait();
     await store.dispatch("getTeamDao");
-    proxy.$showToast("领取成功");
+    proxy.$showToast("Claim successful");
   } catch (e) {
     console.log(e);
-    proxy.$showFailToast("领取失败");
+    proxy.$showFailToast("Claim failed");
   }
 };
 </script>

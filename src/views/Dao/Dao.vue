@@ -13,7 +13,7 @@
           <i class="iconfont icon-team"></i>
         </div>
         <div class="info">
-          <div class="top">Team Affiliation</div>
+          <div class="top">Community Affiliation</div>
           <div class="down">
             Team ID:{{ parentTeamLeader.teamId || store.state.teamDao.teamId }}
           </div>
@@ -38,7 +38,7 @@
         v-if="store.state.teamDao.isNewTeamLeader && !isLeaderDetailShow"
         class="team-progress"
       >
-        <p class="team-progress-title">Become a Team Leader</p>
+        <p class="team-progress-title">Become a Community Leader</p>
         <div class="team-progress-main">
           <div
             class="team-progress-main-line"
@@ -55,7 +55,7 @@
       <div class="permission-box" v-if="active == 0 && !isLeaderDetailShow">
         <div class="info">
           The current permissions are insufficient. Request to purchase a
-          planet, stake it, and then become a Team Leader again
+          planet, stake it, and then become a Community Leader again
         </div>
         <button class="btn1" @click="handlerToHome">BUY PLANET</button>
       </div>
@@ -151,7 +151,7 @@ const handlerActiveInvite = async () => {
     await store.dispatch("getTeamDao");
     await calcInviteButton();
   } else {
-    proxy.$showToast("请先购买星球/且挖矿");
+    proxy.$showToast("Please purchase a planet first and start mining.");
   }
 };
 
@@ -229,7 +229,7 @@ const handlerGetInvited = async () => {
     }
   } catch (e) {
     console.log(e);
-    proxy.$showToast("邀请失败");
+    proxy.$showToast("Invitation failed.");
   } finally {
     show.value = false;
   }
