@@ -38,7 +38,7 @@ export function contract(env?: string) {
       PlanetPool: "0x206707B2cC8AE6DDC2D24278Eb0Ee72e25374111",
       BuyNode: "0x4dc0796E28E62E6A54f605480893Cc140Af3136E",
       Airdrop: "0x21cA829787ff4E638fCAef5B6809A85e8F22ad3E",
-      TEAM_DAO: "0xE7dA0aa0Cd980Af2A183567f22CD0DdaB269fB6C"
+      TEAM_DAO: "0x0cF94A89018044Dc070ca4415fb48d4Ac8C88cea"
     };
   } else {
     return {
@@ -51,7 +51,7 @@ export function contract(env?: string) {
       PlanetPool: "0xFA24fbE911Bb94Ab70737F38e69947074d7B65C6",
       BuyNode: "0x64308c8abFD55E81F88369AD098c8318a84f3AB1",
       Airdrop: "",
-      TEAM_DAO: "0xE7dA0aa0Cd980Af2A183567f22CD0DdaB269fB6C"
+      TEAM_DAO: "0x0cF94A89018044Dc070ca4415fb48d4Ac8C88cea"
     };
   }
 }
