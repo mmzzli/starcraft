@@ -58,12 +58,12 @@ export class TeamDaoFactory {
   }
 
   // 激活
-  async activateInviter() {
+  async activateInviter(address: string) {
     return ContractConnect(
       contract().TEAM_DAO,
       getSigner(),
       abi.abi
-    ).activateInviter();
+    ).activateInviter(address);
   }
 
   // 确认接受

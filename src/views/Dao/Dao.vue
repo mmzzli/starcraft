@@ -147,7 +147,9 @@ const parentTeamLeader = reactive({
 
 const handlerActiveInvite = async () => {
   if ((await canRegisterTeamLeader()) && parentTeamLeader.teamId) {
-    const tx = await teamDaoFactory.activateInviter();
+    const tx = await teamDaoFactory.activateInviter(
+      parentTeamLeader.teamLeaderAddress
+    );
     await tx.wait();
     await canRegisterTeamLeader();
     await store.dispatch("getTeamDao");
