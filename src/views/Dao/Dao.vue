@@ -1,13 +1,12 @@
 <template>
   <section class="container">
     <HeaderTitle headTitle="" />
+    {{ parentTeamLeader.teamId == "" }}
     <div
       class="team-header"
       v-if="
-        (parentTeamLeader.teamId &&
-          parentTeamLeader.teamId != '0' &&
-          parentTeamLeader.teamId != '') ||
-          store.state.teamDao.teamId != ''
+        (parentTeamLeader.teamId && parentTeamLeader.teamId != '0') ||
+          store.state.teamDao.teamId != '0'
       "
     >
       <div class="left">
