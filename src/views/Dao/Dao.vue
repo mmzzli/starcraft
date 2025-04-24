@@ -4,8 +4,10 @@
     <div
       class="team-header"
       v-if="
-        (parentTeamLeader.teamId && parentTeamLeader.teamId != '0') ||
-          store.state.teamDao.teamId != '0'
+        (parentTeamLeader.teamId &&
+          parentTeamLeader.teamId != '0' &&
+          parentTeamLeader.teamId != '') ||
+          store.state.teamDao.teamId != ''
       "
     >
       <div class="left">
@@ -182,10 +184,13 @@ const checkApprove = async balance => {
 // 检查授权是否足够
 const handlerApproveUsdt = async (balance: string | number) => {
   try {
+    console.log(3333);
     const res = await approveUsdt();
     await res.wait();
     await checkApprove(balance);
   } catch (e) {
+    // @ts-ignore
+    proxy.$showFailToast(e?.message);
     console.log(e);
   }
 };

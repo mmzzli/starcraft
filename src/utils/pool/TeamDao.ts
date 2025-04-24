@@ -42,7 +42,6 @@ export class TeamDaoFactory {
 
   // USDT 授权
   async setApprove(contract: string) {
-    console.log(contract, "=====");
     return erc20(token().USDT)
       .connect(getSigner())
       .approve(contract, constants.MaxUint256);
