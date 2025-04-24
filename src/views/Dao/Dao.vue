@@ -1,7 +1,6 @@
 <template>
   <section class="container">
     <HeaderTitle headTitle="" />
-    {{ parentTeamLeader.teamId == "" }}
     <div
       class="team-header"
       v-if="
