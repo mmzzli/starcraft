@@ -305,6 +305,12 @@ const init = async () => {
         isApprovedInvited.value = false;
         return;
       }
+
+      await store.dispatch("getTeamDao");
+      console.log(
+        Number(store.state.teamDao.teamId),
+        "===store.state.teamDao.teamId==="
+      );
       if (
         !new BigNumber(Number(store.state.teamDao.teamId).toString()).isZero()
       ) {
