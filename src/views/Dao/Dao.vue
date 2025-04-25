@@ -305,8 +305,9 @@ const init = async () => {
         isApprovedInvited.value = false;
         return;
       }
-      if (new BigNumber(store.state.teamDao.teamId).isZero()) {
-        console.log(8888);
+      if (
+        !new BigNumber(Number(store.state.teamDao.teamId).toString()).isZero()
+      ) {
         proxy.$showToast("Invalid invitation");
 
         isApprovedInvited.value = false;
