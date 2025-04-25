@@ -297,19 +297,28 @@ const init = async () => {
     if (inviteCode) {
       const res = await teamDaoFactory.users(store.state.walletAccount);
       const data = parseInt(res, 16);
-
-      const isInvalid =
-        !data ||
-        inviteCode === store.state.walletAccount ||
-        !new BigNumber(store.state.teamDao.teamId).isZero();
-
-      isApprovedInvited.value = !isInvalid;
-
-      if (isInvalid) {
-        proxy.$showToast("Invalid invitation");
-      }
-
       await getCurAddressTeamLeaderInfo();
+
+      if (inviteCode === store.state.walletAccount) {
+        console.log(9999);
+        proxy.$showToast("Invalid invitation");
+        isApprovedInvited.value = false;
+        return;
+      }
+      if (new BigNumber(store.state.teamDao.teamId).isZero()) {
+        console.log(8888);
+        proxy.$showToast("Invalid invitation");
+
+        isApprovedInvited.value = false;
+        return;
+      }
+      // 如果有父级需隐藏
+      if (data) {
+        console.log(777);
+        proxy.$showToast("Invalid invitation");
+        isApprovedInvited.value = false;
+        return;
+      }
     }
 
     //  1. 获取 teamDao 信息
