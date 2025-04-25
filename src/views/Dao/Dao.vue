@@ -228,7 +228,23 @@ const getInvitationLink = async () => {
 const handlerGetInvited = async () => {
   try {
     if (inviteCode) {
+      console.log(
+        await teamDaoFactory.getUsdtBalance(store.state.walletAccount)
+      );
       await allowanceApprove(inviteAbsAmount.value);
+      //  检测余额
+      const balance = await teamDaoFactory.getUsdtBalance(
+        store.state.walletAccount
+      );
+
+      if (
+        new BigNumber(balance.toString()).isGreaterThan(
+          new BigNumber(inviteAbsAmount.value)
+        )
+      ) {
+        proxy.$showToast("Insufficient balance");
+        return;
+      }
       const res = await teamDaoFactory.bindInviter(inviteCode as string);
       await res.wait();
       console.log(res);

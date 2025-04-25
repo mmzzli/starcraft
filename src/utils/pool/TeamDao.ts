@@ -47,6 +47,9 @@ export class TeamDaoFactory {
       .approve(contract, constants.MaxUint256);
   }
 
+  async getUsdtBalance(address: string) {
+    return erc20(token().USDT).balanceOf(address);
+  }
   // 注册团队长
   async registerTeamLeader() {
     return ContractConnect(
