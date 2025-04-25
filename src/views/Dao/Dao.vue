@@ -228,9 +228,6 @@ const getInvitationLink = async () => {
 const handlerGetInvited = async () => {
   try {
     if (inviteCode) {
-      console.log(
-        await teamDaoFactory.getUsdtBalance(store.state.walletAccount)
-      );
       await allowanceApprove(inviteAbsAmount.value);
       //  检测余额
       const balance = await teamDaoFactory.getUsdtBalance(
@@ -238,7 +235,7 @@ const handlerGetInvited = async () => {
       );
 
       if (
-        new BigNumber(balance.toString()).isGreaterThan(
+        new BigNumber(balance.toString()).isLessThan(
           new BigNumber(inviteAbsAmount.value)
         )
       ) {
