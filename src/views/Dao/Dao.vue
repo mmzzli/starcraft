@@ -28,6 +28,9 @@
         >
           Invitation activation
         </button>
+        <div class="tips">
+          <i class="iconfont icon-touch_app"></i>
+        </div>
       </div>
     </div>
 
@@ -436,6 +439,7 @@ const handlerToHome = () => {
     padding: 6px;
     justify-content: center;
     align-items: center;
+    position: relative;
     button {
       padding: 0 6px;
       width: 100%;
@@ -445,6 +449,16 @@ const handlerToHome = () => {
       background: rgb(83 172 255);
       box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.15);
       border-radius: 6px;
+    }
+    .tips {
+      position: absolute;
+      left: 30px;
+      top: 33px;
+      animation: move 300ms infinite alternate;
+      .iconfont {
+        font-size: 30px;
+        color: red;
+      }
     }
   }
 }
@@ -663,6 +677,14 @@ const handlerToHome = () => {
       font-weight: 700;
       word-wrap: break-word;
     }
+  }
+}
+@keyframes move {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(3px);
   }
 }
 </style>
