@@ -23,7 +23,7 @@
       </li>
     </ul>
     <img class="bag_img" :src="img27" alt="" @click="router.push('/Bags')" />
-    <van-popup
+    <!--    <van-popup
       v-model:show="show"
       :style="{ width: '100%', background: 'transparent' }"
     >
@@ -38,7 +38,7 @@
         </div>
         <button class="btn1" @click="copyInvite">Copy invitation link</button>
       </div>
-    </van-popup>
+    </van-popup>-->
   </section>
 </template>
 

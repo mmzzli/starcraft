@@ -119,6 +119,7 @@ const copyInvite = () => {
 
 const handlerLeaveTeam = async () => {
   try {
+    proxy.$showLoadingToast({});
     const res = await teamDaoFactory.unStake();
     await res.wait();
     await store.dispatch("getTeamDao");
@@ -127,11 +128,14 @@ const handlerLeaveTeam = async () => {
   } catch (e) {
     console.log(e);
     proxy.$showToast("Failed to exit");
+  } finally {
+    proxy.$closeToast();
   }
 };
 
 const handlerReward = async () => {
   try {
+    proxy.$showLoadingToast({});
     const res = await teamDaoFactory.withDrawReward();
     await res.wait();
     await store.dispatch("getTeamDao");
@@ -139,6 +143,8 @@ const handlerReward = async () => {
   } catch (e) {
     console.log(e);
     proxy.$showFailToast("Claim failed");
+  } finally {
+    proxy.$closeToast();
   }
 };
 </script>

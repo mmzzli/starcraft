@@ -147,13 +147,19 @@ const parentTeamLeader = reactive({
 
 const handlerActiveInvite = async () => {
   if ((await canRegisterTeamLeader()) && parentTeamLeader.teamId) {
-    const tx = await teamDaoFactory.activateInviter(
-      parentTeamLeader.teamLeaderAddress
-    );
-    await tx.wait();
-    await canRegisterTeamLeader();
-    await store.dispatch("getTeamDao");
-    await calcInviteButton();
+    try {
+      proxy.$showLoadingToast({});
+      const tx = await teamDaoFactory.activateInviter(
+        parentTeamLeader.teamLeaderAddress
+      );
+      await tx.wait();
+      await canRegisterTeamLeader();
+      await store.dispatch("getTeamDao");
+      await calcInviteButton();
+    } catch {
+    } finally {
+      proxy.$closeToast();
+    }
   } else {
     proxy.$showToast("Please purchase a planet first and start mining.");
   }
@@ -182,7 +188,7 @@ const checkApprove = async balance => {
 // 检查授权是否足够
 const handlerApproveUsdt = async (balance: string | number) => {
   try {
-    console.log(3333);
+    proxy.$showLoadingToast({});
     const res = await approveUsdt();
     await res.wait();
     await checkApprove(balance);
@@ -190,6 +196,8 @@ const handlerApproveUsdt = async (balance: string | number) => {
     // @ts-ignore
     proxy.$showFailToast(e?.message);
     console.log(e);
+  } finally {
+    proxy.$closeToast();
   }
 };
 
@@ -227,6 +235,7 @@ const getInvitationLink = async () => {
 // 接受邀请
 const handlerGetInvited = async () => {
   try {
+    proxy.$showLoadingToast({});
     if (inviteCode) {
       await allowanceApprove(inviteAbsAmount.value);
       //  检测余额
@@ -252,6 +261,7 @@ const handlerGetInvited = async () => {
     proxy.$showToast("Invitation failed.");
   } finally {
     show.value = false;
+    proxy.$closeToast();
   }
 };
 const getCurAddressTeamLeaderInfo = async () => {
