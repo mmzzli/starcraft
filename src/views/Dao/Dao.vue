@@ -21,11 +21,8 @@
           </div>
         </div>
       </div>
-      <div class="right">
-        <button
-          @click="handlerActiveInvite"
-          v-if="isShowInviteButton && !isLeaderDetailShow"
-        >
+      <div class="right" v-if="isShowInviteButton && !isLeaderDetailShow">
+        <button @click="handlerActiveInvite">
           Invitation activation
         </button>
         <div class="tips">
