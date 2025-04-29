@@ -31,6 +31,16 @@
       </div>
     </div>
 
+    <div
+      class="invite-info"
+      v-if="
+        parentInviteAddress !== '0x0000000000000000000000000000000000000000'
+      "
+    >
+      <div class="tip">我的邀请人</div>
+      <div class="address">{{ parentInviteAddress }}</div>
+    </div>
+
     <div class="container2">
       <img class="banner" :src="img26" alt="" />
 
@@ -131,6 +141,7 @@ const teamDaoFactory = new TeamDaoFactory();
 const { inviteCode } = route.query;
 const inviteAmount = ref("0");
 const inviteAbsAmount = ref("0");
+const parentInviteAddress = ref("");
 
 // 检查资格(持有正在正常挖矿的星球才可以参加)
 const canRegisterTeamLeader = async () => {
@@ -317,9 +328,13 @@ const init = async () => {
 
     await getCurAddressTeamLeaderInfo();
     // 获取它的父级信息
+    const res = await teamDaoFactory.users(store.state.walletAccount);
+
+    parentInviteAddress.value = res;
+
     if (inviteCode) {
-      const res = await teamDaoFactory.users(store.state.walletAccount);
       const data = parseInt(res, 16);
+      console.log(data, "data");
       await getCurAddressTeamLeaderInfo();
 
       if (inviteCode === store.state.walletAccount) {
@@ -516,6 +531,20 @@ const handlerToHome = () => {
         text-align: left;
       }
     }
+  }
+}
+.invite-info {
+  margin: 20px 24px 0;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  box-sizing: border-box;
+  border: 1px solid #4a7ab9;
+  font-size: 14px;
+  line-height: 22px;
+  .tip {
+    font-size: 16px;
+    font-weight: bold;
   }
 }
 .permission-box {
