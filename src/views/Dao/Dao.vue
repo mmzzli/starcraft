@@ -236,9 +236,7 @@ const approveUsdt = async () => {
 // 获取邀请链接
 const getInvitationLink = async () => {
   const url =
-    window.location.origin +
-    `/#${route.fullPath}?inviteCode=` +
-    store.state.walletAccount;
+    window.location.origin + `/#DAO?inviteCode=` + store.state.walletAccount;
   proxy.$utils.handleCopy(url);
   proxy.$showToast("invitation url is copy success");
 };
