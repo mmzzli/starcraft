@@ -339,6 +339,7 @@ const init = async () => {
         console.log(9999);
         proxy.$showToast("Invalid invitation");
         isApprovedInvited.value = false;
+        await router.replace('/DAO')
         return;
       }
 
@@ -353,6 +354,8 @@ const init = async () => {
         proxy.$showToast("Invalid invitation");
 
         isApprovedInvited.value = false;
+        await router.replace('/DAO')
+
         return;
       }
       // 如果有父级需隐藏
@@ -360,6 +363,7 @@ const init = async () => {
         console.log(777);
         proxy.$showToast("Invalid invitation");
         isApprovedInvited.value = false;
+        await router.replace('/DAO')
         return;
       }
     }
