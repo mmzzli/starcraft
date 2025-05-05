@@ -19,6 +19,7 @@ import { ref, onMounted, getCurrentInstance, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { inviting, getSigner } from '@/utils';
+import {TeamDaoFactory} from "@/utils/pool/TeamDao";
 const { proxy } = getCurrentInstance() as any;
 const store = useStore();
 const router = useRouter();
@@ -29,8 +30,20 @@ const inviteCode = computed(() => store.state.inviteCode);
 const inviteLink = ref('');
 const inputVal: any = ref('');
 
-onMounted(() => {
-  if (route.query.inviteCode) store.commit('setInviteCode', route.query.inviteCode);
+const teamDaoFactory = new TeamDaoFactory();
+
+
+onMounted(async () => {
+  if (route.query.inviteCode) {
+    store.commit('setInviteCode', route.query.inviteCode);
+  }else{
+    // dao地址如果被邀请过，默认显示 dao的邀请地址
+    const res = await teamDaoFactory.users(store.state.walletAccount);
+    if(res!=='0x0000000000000000000000000000000000000000'){
+      inputVal.value = res;
+    }
+  }
+
   inputVal.value = inviteCode.value;
   if (walletAccount.value) {
     getUserInviter();
