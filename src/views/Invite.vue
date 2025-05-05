@@ -36,15 +36,16 @@ const teamDaoFactory = new TeamDaoFactory();
 onMounted(async () => {
   if (route.query.inviteCode) {
     store.commit('setInviteCode', route.query.inviteCode);
+    inputVal.value = inviteCode.value;
   }else{
     // dao地址如果被邀请过，默认显示 dao的邀请地址
     const res = await teamDaoFactory.users(store.state.walletAccount);
+    console.log(res,'-------------');
     if(res!=='0x0000000000000000000000000000000000000000'){
       inputVal.value = res;
     }
   }
 
-  inputVal.value = inviteCode.value;
   if (walletAccount.value) {
     getUserInviter();
     inviteLink.value = window.location.origin + '/#/Invite?inviteCode=' + walletAccount.value;
